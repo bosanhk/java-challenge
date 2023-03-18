@@ -10,7 +10,7 @@ public interface EmployeeService {
 
     Employee getEmployee(Long employeeId);
 
-    Employee getEmployeeByNickname(String nickname);
+    Employee getEmployeeByUsername(String username);
 
     void saveEmployee(Employee employee);
 

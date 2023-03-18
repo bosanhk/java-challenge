@@ -13,27 +13,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/employee")
 public class EmployeeController extends BaseController {
 
     private static final Logger logger = LoggerFactory.getLogger(EmployeeController.class);
 
     @Autowired
     private EmployeeService employeeService;
-
     @Autowired
     private Employee2EmployeeDtoConverter employee2EmployeeDtoConverter;
     @Autowired
     private EmployeeDto2EmployeeConverter employeeDto2EmployeeConverter;
 
-    @GetMapping("/employees")
+    @GetMapping("")
     public ResponseDTO<List<Employee>> getEmployees() {
         List<Employee> employees = employeeService.retrieveEmployees();
 
+        //Convert entities into DTO
         List<EmployeeDto> employeeDtoList = employees.stream().map(employee -> {
             EmployeeDto employeeDto = new EmployeeDto();
             employee2EmployeeDtoConverter.convert(employee, employeeDto);
@@ -43,58 +42,65 @@ public class EmployeeController extends BaseController {
         return new ResponseDTO(employeeDtoList);
     }
 
-    @GetMapping("/employees/{employeeId}")
+    @GetMapping("/{employeeId}")
     public ResponseDTO<Employee> getEmployee(@PathVariable(name="employeeId")Long employeeId) throws ApiException {
         Employee employee = employeeService.getEmployee(employeeId);
 
         if (employee == null) throw new ApiException("Employee not found");
 
+        //Convert entities into DTO
         EmployeeDto employeeDto = new EmployeeDto();
         employee2EmployeeDtoConverter.convert(employee, employeeDto);
 
         return new ResponseDTO(employeeDto);
     }
 
-    @PostMapping("/employees")
+    @PostMapping("")
     public ResponseDTO<EmployeeDto> saveEmployee(@RequestBody EmployeeDto employeeDto) throws ApiException {
 
-        Employee duplicateEmployee = employeeService.getEmployeeByNickname(employeeDto.getNickname());
+        //Check if duplicate username
+        if (employeeService.getEmployeeByUsername(employeeDto.getUsername()) != null)
+            throw new ApiException("Employee username has been used.");
 
-        if (duplicateEmployee != null) throw new ApiException("Employee nickname has been used.");
-
+        //Convert DTO into entity
         Employee employee = new Employee();
         employeeDto2EmployeeConverter.convert(employeeDto, employee);
 
         employeeService.saveEmployee(employee);
         logger.debug("Employee Saved Successfully");
 
+        //Convert entity into DTO
         EmployeeDto resultDto = new EmployeeDto();
         employee2EmployeeDtoConverter.convert(employee, resultDto);
 
         return new ResponseDTO(resultDto);
     }
 
-    @DeleteMapping("/employees/{employeeId}")
+    @DeleteMapping("/{employeeId}")
     public ResponseDTO deleteEmployee(@PathVariable(name="employeeId")Long employeeId) throws ApiException {
-        Employee employee = employeeService.getEmployee(employeeId);
 
-        if (employee == null) throw new ApiException("Employee not found");
+        //Check if employee exists
+        if (employeeService.getEmployee(employeeId) == null)
+            throw new ApiException("Employee not found");
 
         employeeService.deleteEmployee(employeeId);
         logger.debug("Employee Deleted Successfully");
         return new ResponseDTO();
     }
 
-    @PutMapping("/employees/{employeeId}")
+    @PutMapping("/{employeeId}")
     public ResponseDTO<EmployeeDto> updateEmployee(@RequestBody EmployeeDto employeeDto,
                                @PathVariable(name="employeeId")Long employeeId) throws ApiException {
+
         Employee employee = employeeService.getEmployee(employeeId);
 
         if (employee == null) throw new ApiException("Employee not found");
 
+        //Convert DTO into entity
         employeeDto2EmployeeConverter.convert(employeeDto, employee);
         employee = employeeService.updateEmployee(employee);
 
+        //Convert entity into DTO
         EmployeeDto resultDto = new EmployeeDto();
         employee2EmployeeDtoConverter.convert(employee, resultDto);
 

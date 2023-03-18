@@ -22,10 +22,10 @@ public class Employee {
 
     @Getter
     @Setter
-    @NotNull(message="Employee nickname is required.")
-    @Size(min=1, message="Employee first name is required.")
-    @Column(name="EMPLOYEE_NICKNAME", unique=true)
-    private String nickname;
+    @NotNull(message="Employee username is required.")
+    @Size(min=1, message="Employee username is required.")
+    @Column(name="EMPLOYEE_USERNAME", unique=true)
+    private String username;
 
 
     @Getter

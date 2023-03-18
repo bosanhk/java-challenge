@@ -8,10 +8,10 @@ import org.springframework.stereotype.Component;
 public class EmployeeDto2EmployeeConverter {
 
     public void convert(EmployeeDto source, Employee target) {
-        target.setSalary(source.getSalary());
-        target.setLastName(source.getLastName());
-        target.setFirstName(source.getFirstName());
-        target.setDepartment(source.getDepartment());
-        target.setNickname(source.getNickname());
+        if (source.getSalary() != null) target.setSalary(source.getSalary());
+        if (source.getLastName() != null) target.setLastName(source.getLastName());
+        if (source.getFirstName() != null) target.setFirstName(source.getFirstName());
+        if (source.getDepartment() != null) target.setDepartment(source.getDepartment());
+        if (source.getUsername() != null) target.setUsername(source.getUsername());
     }
 }

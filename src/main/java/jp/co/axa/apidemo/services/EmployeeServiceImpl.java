@@ -24,8 +24,8 @@ public class EmployeeServiceImpl implements EmployeeService{
         return optEmp.orElse(null);
     }
 
-    public Employee getEmployeeByNickname(String nickname) {
-        Optional<Employee> optEmp = employeeRepository.findByNickname(nickname);
+    public Employee getEmployeeByUsername(String username) {
+        Optional<Employee> optEmp = employeeRepository.findByUsername(username);
         return optEmp.orElse(null);
     }
 

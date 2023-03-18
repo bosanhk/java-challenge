@@ -11,7 +11,7 @@ public class EmployeeDto {
 
     @Getter
     @Setter
-    private String nickname;
+    private String username;
 
 
     @Getter

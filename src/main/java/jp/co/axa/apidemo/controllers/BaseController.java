@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,6 +18,9 @@ public class BaseController {
 
     private static final Logger logger = LoggerFactory.getLogger(BaseController.class);
 
+    /*
+    Catch the JPA validation exception
+     */
     @ResponseStatus(HttpStatus.BAD_REQUEST)  // 400
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseBody
@@ -30,6 +32,9 @@ public class BaseController {
         return new ResponseDTO(false, errors.toString());
     }
 
+    /*
+    Catch the custom exception
+     */
     @ResponseStatus(HttpStatus.BAD_REQUEST)  // 400
     @ExceptionHandler(ApiException.class)
     @ResponseBody

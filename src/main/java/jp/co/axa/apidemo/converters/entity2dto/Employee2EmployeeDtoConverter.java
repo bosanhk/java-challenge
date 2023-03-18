@@ -13,6 +13,6 @@ public class Employee2EmployeeDtoConverter {
         target.setLastName(source.getLastName());
         target.setFirstName(source.getFirstName());
         target.setDepartment(source.getDepartment());
-        target.setNickname(source.getNickname());
+        target.setUsername(source.getUsername());
     }
 }
