@@ -14,10 +14,6 @@ public class EmployeeServiceImpl implements EmployeeService{
     @Autowired
     private EmployeeRepository employeeRepository;
 
-    public void setEmployeeRepository(EmployeeRepository employeeRepository) {
-        this.employeeRepository = employeeRepository;
-    }
-
     public List<Employee> retrieveEmployees() {
         List<Employee> employees = employeeRepository.findAll();
         return employees;
@@ -25,7 +21,12 @@ public class EmployeeServiceImpl implements EmployeeService{
 
     public Employee getEmployee(Long employeeId) {
         Optional<Employee> optEmp = employeeRepository.findById(employeeId);
-        return optEmp.get();
+        return optEmp.orElse(null);
+    }
+
+    public Employee getEmployeeByNickname(String nickname) {
+        Optional<Employee> optEmp = employeeRepository.findByNickname(nickname);
+        return optEmp.orElse(null);
     }
 
     public void saveEmployee(Employee employee){
@@ -36,7 +37,7 @@ public class EmployeeServiceImpl implements EmployeeService{
         employeeRepository.deleteById(employeeId);
     }
 
-    public void updateEmployee(Employee employee) {
-        employeeRepository.save(employee);
+    public Employee updateEmployee(Employee employee) {
+        return employeeRepository.save(employee);
     }
 }

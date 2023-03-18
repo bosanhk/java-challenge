@@ -1,0 +1,12 @@
+<ehcache>
+    <diskStore path="java.io.tmpdir"/>
+    <defaultCache
+            maxEntriesLocalHeap="10000"
+            eternal="false"
+            timeToIdleSeconds="120"
+            timeToLiveSeconds="120"
+            maxEntriesLocalDisk="10000000"
+            diskExpiryThreadIntervalSeconds="120"
+            memoryStoreEvictionPolicy="LRU"/>
+    <cache name="jp.co.axa.apidemo.entities.Employee" maxElementsInMemory="1000" />
+</ehcache>
