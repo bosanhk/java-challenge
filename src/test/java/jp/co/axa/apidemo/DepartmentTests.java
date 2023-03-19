@@ -12,6 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -36,6 +37,11 @@ public class DepartmentTests {
 
 	@Autowired
 	private DepartmentService departmentService;
+
+	@Value("${api.security.apiKey}")
+	private String apikey;
+
+	private static final String API_KEY_PARAM = "X-Custom-ApiKey";
 
 	Department departmentForDelete = new Department();
 	Department departmentForUpdate = new Department();
@@ -75,7 +81,8 @@ public class DepartmentTests {
 	public void listDepartment() throws Exception {
 
 		MvcResult result = mvc.perform(MockMvcRequestBuilders.get("/api/v1/department")
-				.contentType(MediaType.APPLICATION_JSON))
+				.contentType(MediaType.APPLICATION_JSON)
+				.header(API_KEY_PARAM, apikey))
 				.andExpect(MockMvcResultMatchers.status().isOk())
 				.andExpect(MockMvcResultMatchers.content()
 						.contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -100,7 +107,8 @@ public class DepartmentTests {
 	public void getDepartment() throws Exception {
 
 		MvcResult result = mvc.perform(MockMvcRequestBuilders.get("/api/v1/department/" + departmentForUpdate.getId())
-				.contentType(MediaType.APPLICATION_JSON))
+				.contentType(MediaType.APPLICATION_JSON)
+				.header(API_KEY_PARAM, apikey))
 				.andExpect(MockMvcResultMatchers.status().isOk())
 				.andExpect(MockMvcResultMatchers.content()
 						.contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -123,7 +131,8 @@ public class DepartmentTests {
 
 		MvcResult result = mvc.perform(MockMvcRequestBuilders.post("/api/v1/department")
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(objectMapper.writeValueAsString(departmentDtoForCreate)))
+				.content(objectMapper.writeValueAsString(departmentDtoForCreate))
+				.header(API_KEY_PARAM, apikey))
 				.andExpect(MockMvcResultMatchers.status().isOk())
 				.andExpect(MockMvcResultMatchers.content()
 						.contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -146,7 +155,8 @@ public class DepartmentTests {
 
 		MvcResult result = mvc.perform(MockMvcRequestBuilders.put("/api/v1/department/" + departmentForUpdate.getId())
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(objectMapper.writeValueAsString(departmentDtoForUpdate)))
+				.content(objectMapper.writeValueAsString(departmentDtoForUpdate))
+				.header(API_KEY_PARAM, apikey))
 				.andExpect(MockMvcResultMatchers.status().isOk())
 				.andExpect(MockMvcResultMatchers.content()
 						.contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -166,7 +176,8 @@ public class DepartmentTests {
 	public void deleteDepartment() throws Exception {
 
 		MvcResult result = mvc.perform(MockMvcRequestBuilders.delete("/api/v1/department/" + departmentForDelete.getId())
-				.contentType(MediaType.APPLICATION_JSON))
+				.contentType(MediaType.APPLICATION_JSON)
+				.header(API_KEY_PARAM, apikey))
 				.andExpect(MockMvcResultMatchers.status().isOk())
 				.andExpect(MockMvcResultMatchers.content()
 						.contentTypeCompatibleWith(MediaType.APPLICATION_JSON))

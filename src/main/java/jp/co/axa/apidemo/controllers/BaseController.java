@@ -19,6 +19,8 @@ public class BaseController {
 
     private static final Logger logger = LoggerFactory.getLogger(BaseController.class);
 
+    protected static final String API_KEY_PARAM = "X-Custom-ApiKey";
+
     /*
     Catch the JPA validation exception
      */

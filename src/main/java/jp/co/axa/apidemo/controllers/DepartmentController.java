@@ -1,5 +1,6 @@
 package jp.co.axa.apidemo.controllers;
 
+import io.swagger.annotations.*;
 import jp.co.axa.apidemo.converters.dto2entity.DepartmentDto2DepartmentConverter;
 import jp.co.axa.apidemo.converters.entity2dto.Department2DepartmentDtoConverter;
 import jp.co.axa.apidemo.converters.entity2dto.Employee2EmployeeDtoConverter;
@@ -17,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/department")
@@ -34,8 +34,17 @@ public class DepartmentController extends BaseController {
     @Autowired
     private Employee2EmployeeDtoConverter employee2EmployeeDtoConverter;
 
-    @GetMapping("")
-    public ResponseDTO<List<Department>> getDepartments() {
+    
+    @GetMapping(value = "", produces = "application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = API_KEY_PARAM, value = "Custom API Key Header", required = true, allowEmptyValue = false, paramType = "header", dataTypeClass = String.class, defaultValue = "mCplueTT3T9vSgyrytEqRPHI4")
+    })
+    @ApiOperation(value = "List All Departments")
+    @ApiResponses({
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 400, message = "Service Exception")
+    })
+    public ResponseDTO<List<DepartmentDto>> getDepartments() {
         List<Department> departments = departmentService.retrieveDepartments();
 
         //Convert entities into DTO
@@ -44,8 +53,17 @@ public class DepartmentController extends BaseController {
         return new ResponseDTO(departmentDtoList);
     }
 
-    @GetMapping("/{departmentId}")
-    public ResponseDTO<Department> getDepartment(@PathVariable(name="departmentId")Long departmentId) throws ApiException {
+    
+    @GetMapping(value = "/{departmentId}", produces = "application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = API_KEY_PARAM, value = "Custom API Key Header", required = true, allowEmptyValue = false, paramType = "header", dataTypeClass = String.class, defaultValue = "mCplueTT3T9vSgyrytEqRPHI4")
+    })
+    @ApiOperation(value = "Get Department Details By ID")
+    @ApiResponses({
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 400, message = "Service Exception")
+    })
+    public ResponseDTO<DepartmentDto> getDepartment(@PathVariable(name="departmentId")Long departmentId) throws ApiException {
         Department department = departmentService.getDepartment(departmentId);
 
         if (department == null) throw new ApiException("Department not found");
@@ -57,7 +75,16 @@ public class DepartmentController extends BaseController {
         return new ResponseDTO(departmentDto);
     }
 
-    @GetMapping("/{departmentId}/employee")
+    
+    @GetMapping(value = "/{departmentId}/employee", produces = "application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = API_KEY_PARAM, value = "Custom API Key Header", required = true, allowEmptyValue = false, paramType = "header", dataTypeClass = String.class, defaultValue = "mCplueTT3T9vSgyrytEqRPHI4")
+    })
+    @ApiOperation(value = "List All Employees Of Department By Department ID")
+    @ApiResponses({
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 400, message = "Service Exception")
+    })
     public ResponseDTO<List<EmployeeDto>> getDepartmentEmployee(@PathVariable(name="departmentId")Long departmentId) {
         List<Employee> employees = departmentService.retrieveDepartmentEmployees(departmentId);
 
@@ -67,7 +94,16 @@ public class DepartmentController extends BaseController {
         return new ResponseDTO(employeeDtoList);
     }
 
-    @PostMapping("")
+    
+    @PostMapping(value = "", produces = "application/json", consumes = "application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = API_KEY_PARAM, value = "Custom API Key Header", required = true, allowEmptyValue = false, paramType = "header", dataTypeClass = String.class, defaultValue = "mCplueTT3T9vSgyrytEqRPHI4")
+    })
+    @ApiOperation(value = "Create New Department", notes = "Department name must be unique")
+    @ApiResponses({
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 400, message = "Service Exception")
+    })
     public ResponseDTO<DepartmentDto> createDepartment(@RequestBody DepartmentDto departmentDto) throws ApiException, ServiceException {
 
         //Check if duplicate department name
@@ -88,7 +124,16 @@ public class DepartmentController extends BaseController {
         return new ResponseDTO(resultDto);
     }
 
-    @DeleteMapping("/{departmentId}")
+    
+    @DeleteMapping(value = "/{departmentId}", produces = "application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = API_KEY_PARAM, value = "Custom API Key Header", required = true, allowEmptyValue = false, paramType = "header", dataTypeClass = String.class, defaultValue = "mCplueTT3T9vSgyrytEqRPHI4")
+    })
+    @ApiOperation(value = "Delete Department By ID")
+    @ApiResponses({
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 400, message = "Service Exception")
+    })
     public ResponseDTO deleteDepartment(@PathVariable(name="departmentId")Long departmentId) throws ApiException {
 
         //Check if department exists
@@ -100,7 +145,16 @@ public class DepartmentController extends BaseController {
         return new ResponseDTO();
     }
 
-    @PutMapping("/{departmentId}")
+    
+    @PutMapping(value = "/{departmentId}", produces = "application/json", consumes = "application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = API_KEY_PARAM, value = "Custom API Key Header", required = true, allowEmptyValue = false, paramType = "header", dataTypeClass = String.class, defaultValue = "mCplueTT3T9vSgyrytEqRPHI4")
+    })
+    @ApiOperation(value = "Update Department By ID", notes = "Department name must be unique")
+    @ApiResponses({
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 400, message = "Service Exception")
+    })
     public ResponseDTO<DepartmentDto> updateDepartment(@RequestBody DepartmentDto departmentDto,
                                @PathVariable(name="departmentId")Long departmentId) throws ApiException, ServiceException {
 

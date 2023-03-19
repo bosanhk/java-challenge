@@ -1,5 +1,6 @@
 package jp.co.axa.apidemo.controllers;
 
+import io.swagger.annotations.*;
 import jp.co.axa.apidemo.converters.dto2entity.EmployeeDto2EmployeeConverter;
 import jp.co.axa.apidemo.converters.entity2dto.Employee2EmployeeDtoConverter;
 import jp.co.axa.apidemo.dto.EmployeeDto;
@@ -28,8 +29,17 @@ public class EmployeeController extends BaseController {
     @Autowired
     private EmployeeDto2EmployeeConverter employeeDto2EmployeeConverter;
 
-    @GetMapping("")
-    public ResponseDTO<List<Employee>> getEmployees() {
+
+    @GetMapping(value = "", produces = "application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = API_KEY_PARAM, value = "Custom API Key Header", required = true, allowEmptyValue = false, paramType = "header", dataTypeClass = String.class, defaultValue = "mCplueTT3T9vSgyrytEqRPHI4")
+    })
+    @ApiOperation(value = "List All Employees")
+    @ApiResponses({
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 400, message = "Service Exception")
+    })
+    public ResponseDTO<List<EmployeeDto>> getEmployees() {
         List<Employee> employees = employeeService.retrieveEmployees();
 
         //Convert entities into DTO
@@ -38,8 +48,17 @@ public class EmployeeController extends BaseController {
         return new ResponseDTO(employeeDtoList);
     }
 
-    @GetMapping("/{employeeId}")
-    public ResponseDTO<Employee> getEmployee(@PathVariable(name="employeeId")Long employeeId) throws ApiException {
+
+    @GetMapping(value = "/{employeeId}", produces = "application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = API_KEY_PARAM, value = "Custom API Key Header", required = true, allowEmptyValue = false, paramType = "header", dataTypeClass = String.class, defaultValue = "mCplueTT3T9vSgyrytEqRPHI4")
+    })
+    @ApiOperation(value = "Get Employee Details By ID")
+    @ApiResponses({
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 400, message = "Service Exception")
+    })
+    public ResponseDTO<EmployeeDto> getEmployee(@PathVariable(name="employeeId")Long employeeId) throws ApiException {
         Employee employee = employeeService.getEmployee(employeeId);
 
         if (employee == null) throw new ApiException("Employee not found");
@@ -51,7 +70,16 @@ public class EmployeeController extends BaseController {
         return new ResponseDTO(employeeDto);
     }
 
-    @PostMapping("")
+
+    @PostMapping(value = "", produces = "application/json", consumes = "application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = API_KEY_PARAM, value = "Custom API Key Header", required = true, allowEmptyValue = false, paramType = "header", dataTypeClass = String.class, defaultValue = "mCplueTT3T9vSgyrytEqRPHI4")
+    })
+    @ApiOperation(value = "Create New Employee", notes = "Username must be unique")
+    @ApiResponses({
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 400, message = "Service Exception")
+    })
     public ResponseDTO<EmployeeDto> createEmployee(@RequestBody EmployeeDto employeeDto) throws ApiException, ServiceException {
 
         //Check if duplicate username
@@ -72,7 +100,16 @@ public class EmployeeController extends BaseController {
         return new ResponseDTO(resultDto);
     }
 
-    @DeleteMapping("/{employeeId}")
+
+    @DeleteMapping(value = "/{employeeId}", produces = "application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = API_KEY_PARAM, value = "Custom API Key Header", required = true, allowEmptyValue = false, paramType = "header", dataTypeClass = String.class, defaultValue = "mCplueTT3T9vSgyrytEqRPHI4")
+    })
+    @ApiOperation(value = "Delete Employee By ID")
+    @ApiResponses({
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 400, message = "Service Exception")
+    })
     public ResponseDTO deleteEmployee(@PathVariable(name="employeeId")Long employeeId) throws ApiException {
 
         //Check if employee exists
@@ -84,7 +121,16 @@ public class EmployeeController extends BaseController {
         return new ResponseDTO();
     }
 
-    @PutMapping("/{employeeId}")
+
+    @PutMapping(value = "/{employeeId}", produces = "application/json", consumes = "application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = API_KEY_PARAM, value = "Custom API Key Header", required = true, allowEmptyValue = false, paramType = "header", dataTypeClass = String.class, defaultValue = "mCplueTT3T9vSgyrytEqRPHI4")
+    })
+    @ApiOperation(value = "Update Employee By ID", notes = "Username must be unique")
+    @ApiResponses({
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 400, message = "Service Exception")
+    })
     public ResponseDTO<EmployeeDto> updateEmployee(@RequestBody EmployeeDto employeeDto,
                                @PathVariable(name="employeeId")Long employeeId) throws ApiException, ServiceException {
 
