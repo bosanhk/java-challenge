@@ -1,6 +1,7 @@
 package jp.co.axa.apidemo.services;
 
 import jp.co.axa.apidemo.entities.Employee;
+import jp.co.axa.apidemo.exceptions.ServiceException;
 
 import java.util.List;
 
@@ -12,9 +13,9 @@ public interface EmployeeService {
 
     Employee getEmployeeByUsername(String username);
 
-    void saveEmployee(Employee employee);
+    Employee createEmployee(Employee employee) throws ServiceException;
 
     void deleteEmployee(Long employeeId);
 
-    Employee updateEmployee(Employee employee);
+    Employee updateEmployee(Employee employee) throws ServiceException;
 }

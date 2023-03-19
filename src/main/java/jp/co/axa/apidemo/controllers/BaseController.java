@@ -2,6 +2,7 @@ package jp.co.axa.apidemo.controllers;
 
 import jp.co.axa.apidemo.dto.common.ResponseDTO;
 import jp.co.axa.apidemo.exceptions.ApiException;
+import jp.co.axa.apidemo.exceptions.ServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -33,12 +34,22 @@ public class BaseController {
     }
 
     /*
-    Catch the custom exception
+    Catch the custom API exception
      */
     @ResponseStatus(HttpStatus.BAD_REQUEST)  // 400
     @ExceptionHandler(ApiException.class)
     @ResponseBody
     public ResponseDTO handleApiException(ApiException e) {
+        return new ResponseDTO(false, e.getMessage());
+    }
+
+    /*
+    Catch the custom service exception
+     */
+    @ResponseStatus(HttpStatus.BAD_REQUEST)  // 400
+    @ExceptionHandler(ServiceException.class)
+    @ResponseBody
+    public ResponseDTO handleServiceException(ServiceException e) {
         return new ResponseDTO(false, e.getMessage());
     }
 }

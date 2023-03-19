@@ -3,9 +3,12 @@ package jp.co.axa.apidemo.entities;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -24,6 +27,8 @@ public class Employee {
     @Setter
     @NotNull(message="Employee username is required.")
     @Size(min=1, message="Employee username is required.")
+    @Pattern(regexp = "^([A-Za-z0-9]|\\.|_)*$",
+            message = "Employee username only allow English letter, number, dot and underscore")
     @Column(name="EMPLOYEE_USERNAME", unique=true)
     private String username;
 
@@ -52,8 +57,9 @@ public class Employee {
     @Getter
     @Setter
     @NotNull(message="Employee department is required.")
-    @Size(min=1, message = "Employee department is required.")
-    @Column(name="DEPARTMENT")
-    private String department;
+    @JoinColumn(name="DEPARTMENT_ID")
+    @ManyToOne
+    @Fetch(FetchMode.JOIN)
+    private Department department;
 
 }

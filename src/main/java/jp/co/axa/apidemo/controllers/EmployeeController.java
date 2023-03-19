@@ -6,6 +6,7 @@ import jp.co.axa.apidemo.dto.EmployeeDto;
 import jp.co.axa.apidemo.dto.common.ResponseDTO;
 import jp.co.axa.apidemo.entities.Employee;
 import jp.co.axa.apidemo.exceptions.ApiException;
+import jp.co.axa.apidemo.exceptions.ServiceException;
 import jp.co.axa.apidemo.services.EmployeeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/employee")
@@ -33,11 +33,7 @@ public class EmployeeController extends BaseController {
         List<Employee> employees = employeeService.retrieveEmployees();
 
         //Convert entities into DTO
-        List<EmployeeDto> employeeDtoList = employees.stream().map(employee -> {
-            EmployeeDto employeeDto = new EmployeeDto();
-            employee2EmployeeDtoConverter.convert(employee, employeeDto);
-            return employeeDto;
-        }).collect(Collectors.toList());
+        List<EmployeeDto> employeeDtoList = employee2EmployeeDtoConverter.convert(employees);
 
         return new ResponseDTO(employeeDtoList);
     }
@@ -56,7 +52,7 @@ public class EmployeeController extends BaseController {
     }
 
     @PostMapping("")
-    public ResponseDTO<EmployeeDto> saveEmployee(@RequestBody EmployeeDto employeeDto) throws ApiException {
+    public ResponseDTO<EmployeeDto> createEmployee(@RequestBody EmployeeDto employeeDto) throws ApiException, ServiceException {
 
         //Check if duplicate username
         if (employeeService.getEmployeeByUsername(employeeDto.getUsername()) != null)
@@ -66,7 +62,7 @@ public class EmployeeController extends BaseController {
         Employee employee = new Employee();
         employeeDto2EmployeeConverter.convert(employeeDto, employee);
 
-        employeeService.saveEmployee(employee);
+        employee = employeeService.createEmployee(employee);
         logger.debug("Employee Saved Successfully");
 
         //Convert entity into DTO
@@ -90,7 +86,7 @@ public class EmployeeController extends BaseController {
 
     @PutMapping("/{employeeId}")
     public ResponseDTO<EmployeeDto> updateEmployee(@RequestBody EmployeeDto employeeDto,
-                               @PathVariable(name="employeeId")Long employeeId) throws ApiException {
+                               @PathVariable(name="employeeId")Long employeeId) throws ApiException, ServiceException {
 
         Employee employee = employeeService.getEmployee(employeeId);
 

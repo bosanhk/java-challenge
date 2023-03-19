@@ -9,4 +9,5 @@
             diskExpiryThreadIntervalSeconds="120"
             memoryStoreEvictionPolicy="LRU"/>
     <cache name="jp.co.axa.apidemo.entities.Employee" maxElementsInMemory="1000" />
+    <cache name="jp.co.axa.apidemo.entities.Department" maxElementsInMemory="100" />
 </ehcache>
