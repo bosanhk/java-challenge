@@ -54,9 +54,13 @@ public class EmployeeServiceImpl implements EmployeeService {
         if (employee.getId() == null)
             throw new ServiceException("Employee not found");
 
-        if (!employeeRepository.findById(employee.getId()).isPresent())
+        if (!employeeRepository.existsById(employee.getId()))
             throw new ServiceException("Employee not found");
 
-        return employeeRepository.save(employee);
+        try {
+            return employeeRepository.save(employee);
+        } catch (Exception ex) {
+            throw new ServiceException(ex.getMessage());
+        }
     }
 }

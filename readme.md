@@ -1,3 +1,7 @@
+### Prerequisites
+- Java 8 (JDK 1.8)
+- Maven
+
 ### How to use this spring-boot project
 
 - Install packages with `mvn package`
@@ -5,48 +9,39 @@
 
 Application (with the embedded H2 database) is ready to be used ! You can access the url below for testing it :
 
-- Swagger UI : http://localhost:8080/swagger-ui.html
-- H2 UI : http://localhost:8080/h2-console
-
-> Don't forget to set the `JDBC URL` value as `jdbc:h2:mem:testdb` for H2 UI.
-
+- Swagger UI : https://localhost:8443/swagger-ui.html
+- H2 UI : https://localhost:8443/h2-console 
+  (JDBC URL: jdbc:h2:mem:testdb, login: sa, password: password)
 
 
-### Instructions
+### Bug Fixed
+- Unable to update employee
+- allow user to create an employee via query parameter
 
-- download the zip file of this project
-- create a repository in your own github named 'java-challenge'
-- clone your repository in a folder on your machine
-- extract the zip file in this folder
-- commit and push
+### Enhancements done
+- package rearrange
+- Add log rotation for each day  
+- Use ResponseDto for standard response object.
+- Add exception handler for all API to control the response message.
+- Add 'username' into Employee for avoiding confusion when multiple persons have same first/last name, which the username must be unique.
+- Add JPA validation for entities.
+- Use DTO to increase flexibility on the handling of API interfaces and entities.
+- Applied SSL with self-signed cert
+- Applied JPA second level cache 
+- Add Department entity and the corresponding repository, service and controller
+- Add MVC tests for all APIs
+- Applied API key for all API
+- Update the Swagger documentation (title, summary, API header, responses), and remove the default responses.
 
-- Enhance the code in any ways you can see, you are free! Some possibilities:
-  - Add tests
-  - Change syntax
-  - Protect controller end points
-  - Add caching logic for database calls
-  - Improve doc and comments
-  - Fix any bug you might find
-- Edit readme.md and add any comments. It can be about what you did, what you would have done if you had more time, etc.
-- Send us the link of your repository.
-
-#### Restrictions
-- use java 8
+### TODO
+- Encrypt sensitive information before store into the database (e.g. salary)
+- Investigate other alternative (e.g. Redis) for JPA second level cache if deploy the application to OpenShift 
 
 
-#### What we will look for
-- Readability of your code
-- Documentation
-- Comments in your code 
-- Appropriate usage of spring boot
-- Appropriate usage of packages
-- Is the application running as expected
-- No performance issues
+## 
+#### My experience in Java
+- I have 7+ years of Java experience
+- I have built API from scratch using both Spring and Spring Boot
+- I can design and implement a Spring application with consideration of flexibility, scalability, performance and security. 
 
-#### Your experience in Java
 
-Please let us know more about your Java experience in a few sentences. For example:
-
-- I have 3 years experience in Java and I started to use Spring Boot from last year
-- I'm a beginner and just recently learned Spring Boot
-- I know Spring Boot very well and have been using it for many years

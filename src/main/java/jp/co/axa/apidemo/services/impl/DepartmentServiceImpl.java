@@ -62,7 +62,7 @@ public class DepartmentServiceImpl implements DepartmentService {
         if (department.getId() == null)
             throw new ServiceException("Department not found.");
 
-        if (!departmentRepository.findById(department.getId()).isPresent())
+        if (!departmentRepository.existsById(department.getId()))
             throw new ServiceException("Department not found.");
 
         return departmentRepository.save(department);
